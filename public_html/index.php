@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/_init.php';
+headers_common(); require_installed();
+$news=public_news(6);
+page_head(t('school'),t('hero_text'));
+?>
+<main id="main">
+<section class="hero"><div class="wrap hero-grid"><div class="hero-copy"><p class="eyebrow"><span></span><?= e(t('hero_eyebrow')) ?></p><h1><?= e(t('hero_title')) ?></h1><p class="hero-description"><?= e(t('hero_text')) ?></p><div class="hero-actions"><a class="button button-primary" href="#programs"><?= e(t('hero_cta')) ?> <span aria-hidden="true">↗</span></a><a class="text-link" href="#contact"><?= e(t('contact_cta')) ?> <span aria-hidden="true">→</span></a></div><div class="hero-caption"><span class="small-label"><?= e(t('teaching_language')) ?></span><strong><?= e(t('teaching_language_value')) ?></strong></div></div><div class="hero-photo"><img src="<?= e(url('assets/img/fon1.webp')) ?>" alt="<?= e(t('hero_image')) ?>" width="640" height="640" fetchpriority="high"><div class="photo-label"><span>01</span><p><?= e(t('school')) ?></p></div></div></div></section>
+<section class="features wrap" aria-label="<?= e(t('hero_eyebrow')) ?>">
+<?php for($i=1;$i<=3;$i++): ?><article class="feature"><span class="feature-number">0<?= $i ?></span><div><h2><?= e(t('feature'.$i)) ?></h2><p><?= e(t('feature'.$i.'_text')) ?></p></div></article><?php endfor; ?>
+</section>
+<section id="news" class="section wrap"><div class="section-heading"><div><p class="eyebrow"><?= e(t('news_eyebrow')) ?></p><h2><?= e(t('news_title')) ?></h2><p><?= e(t('news_text')) ?></p></div><a class="text-link" href="<?= e(url('news.php',['lang'=>lang()])) ?>"><?= e(t('all_news')) ?> <span aria-hidden="true">↗</span></a></div><div class="news-grid"><?php if(!$news): ?><p class="empty-state"><?= e(t('empty_news')) ?></p><?php endif; foreach($news as $item)news_card($item); ?></div></section>
+<section id="programs" class="programs-section"><div class="wrap section"><div class="section-heading"><div><p class="eyebrow"><?= e(t('programs_eyebrow')) ?></p><h2><?= e(t('programs_title')) ?></h2><p><?= e(t('programs_text')) ?></p></div><span class="section-count">09</span></div><div class="program-grid">
+<?php $images=json_decode(file_get_contents(dirname(__DIR__).'/texnikum_private/program_images.json'),true); foreach(translations()[lang()]['programs'] as $i=>$program): ?>
+<article class="program-card"><div class="program-image"><img src="<?= e(url('assets/img/'.$images[$i].'.webp')) ?>" alt="<?= e($program) ?>" width="800" height="640" loading="lazy" decoding="async"><span><?= sprintf('%02d',$i+1) ?></span></div><h3><?= e($program) ?></h3></article>
+<?php endforeach; ?></div></div></section>
+<section id="contact" class="section wrap"><div class="contact-grid"><div><p class="eyebrow"><?= e(t('contact_eyebrow')) ?></p><h2><?= e(t('contact_title')) ?></h2><p class="contact-description"><?= e(t('contact_text')) ?></p><dl class="contact-list"><dt><?= e(t('address_label')) ?></dt><dd><?= e(t('address')) ?></dd><dt><?= e(t('phone_label')) ?></dt><dd><a href="tel:<?= e(config()['phone']) ?>"><?= e(config()['phone_display']) ?></a></dd><?php if(filter_var(config()['email'],FILTER_VALIDATE_EMAIL)): ?><dt><?= e(t('email_label')) ?></dt><dd><a href="mailto:<?= e(config()['email']) ?>"><?= e(config()['email']) ?></a></dd><?php endif; ?></dl></div><div class="map-card"><div class="map-placeholder"><span class="map-pin" aria-hidden="true">⌖</span><h3><?= e(t('school')) ?></h3><p><?= e(t('address')) ?></p><button class="button button-primary" type="button" id="load-map"><?= e(t('map_load')) ?></button><a class="text-link" href="https://www.google.com/maps/search/?api=1&amp;query=42.4033253,59.4641845" target="_blank" rel="noopener noreferrer"><?= e(t('map_open')) ?> ↗</a></div><iframe id="campus-map" data-src="https://www.google.com/maps?q=42.4033253,59.4641845&amp;z=16&amp;output=embed" title="<?= e(t('map_title')) ?>" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" hidden></iframe></div></div></section>
+</main>
+<?php page_foot(); ?>

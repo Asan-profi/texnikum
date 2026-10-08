@@ -1,7 +1,0 @@
-Options -Indexes -ExecCGI
-<FilesMatch "\.(?!(?:webp|jpg)$)[^.]+$">
-    Require all denied
-</FilesMatch>
-<FilesMatch "\.(?:php[0-9]*|phtml|phar|cgi|pl|py|sh|html?|svg|shtml)(?:\.|$)">
-    Require all denied
-</FilesMatch>
